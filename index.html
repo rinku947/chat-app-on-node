@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Hello world</title>
+   </head>
+   <style type="text/css">
+      
+@import  url(https://fonts.googleapis.com/css?family=Montserrat);
+
+body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: Montserrat;
+  background: #313E50;
+}
+
+.text-input{
+  
+  position: relative;
+  margin-top: 50px;
+  }   
+  input[type="text"]{
+    display: inline-block;
+    width: 500px;
+    height: 40px;
+    box-sizing: border-box;
+    outline: none;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    padding: 1px 2px 0px 128px;
+    transition: all 0.1s ease-out;
+  }
+  
+  input[type="text"] + label  {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    bottom: 0;
+    height: 34px;
+    line-height: 40px;
+    color: white;
+    border-radius: 3px 0 0 3px;
+    padding: 3px 10px;
+    background: #E03616;
+    transform: translateZ(0) translateX(0);
+    transition: all 0.3s ease-in;
+    transition-delay: 0.2s;
+  }
+  
+  input[type="text"]:focus + label {
+    transform: translateY(-120%) translateX(0%);
+    border-radius: 3px;
+    transition: all 0.1s ease-out;
+  }
+  
+  input[type="text"]:focus{
+    padding: 10px;
+    transition: all 0.3s ease-out;
+    transition-delay: 0.2s;
+  }
+.button {
+  border-radius: 4px;
+  background-color: #E03616;
+  border: none;
+  color: white;
+  text-align: center;
+  font-size: 22px;
+  font-family: Montserrat;
+  padding: 0px;
+    width: 100px;
+    height: 44px;
+ display: inline-block;
+ margin-top: 10px;
+ margin-left: 10px;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+
+   </style>>
+   <script src = "/socket.io/socket.io.js"></script>
+   <script>
+      var socket = io();
+      function setUsername() {
+         socket.emit('setUsername', document.getElementById('name').value);
+      };
+       var user;
+      socket.on('userExists', function(data) {
+         document.getElementById('error-container').innerHTML = data;
+      });
+      socket.on('userSet', function(data) {
+         user = data.username;
+         document.body.innerHTML = '<input type = "text" id = "message">\
+         <button class= "button" type = "submit" name = "button" onclick = "sendMessage()">Send</button>\
+         <div id = "message-container"></div>';
+      });
+      function sendMessage() {
+         var msg = document.getElementById('message').value;
+         if(msg) {
+            socket.emit('msg', {message: msg, user: user});
+         }
+      }
+      socket.on('newmsg', function(data) {
+         if(user) {
+            document.getElementById('message-container').innerHTML += '<div><b>' + 
+               data.user + '</b>: ' + data.message + '</div>'
+         }
+      })
+ 
+   </script>
+   
+   <body>
+      <div id = "error-container"></div>
+     <div class="text-input">
+  <input id = "name" type="text" name = "name"  placeholder="Enter your Nick Name to start chat">
+  <label for="input1">Nick Name</label>
+   <button class="button" id="btn1" type = "submit"   onclick = "setUsername()">
+      <span>   chat </span> 
+      </button>
+</div>
+
+      </button>
+   </body>
+</html>
