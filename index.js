@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 var session=require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var ObjectId = require('mongodb').ObjectID;
+const PORT = process.env.PORT || 5000
 
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
@@ -142,10 +143,4 @@ io.on('connection', function(socket) {
       io.sockets.emit('newmsg', data);
    })
 });
-  /*var port = process.env.port || 3000;*/
-
-/*http.listen(port)
-   console.log('listening on localhost:3000');*/
-   http.listen((process.env.PORT || 3000), function(){
-  console.log('listening on :3000');
-});
+  http.listen(PORT, () => console.log(`Listening on ${ PORT }`))
