@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 //app.use(bodyParser.validator());
 app.use(bodyParser.urlencoded({ extended: false }));
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://localhost:27017/namechat").then(function(dbcon){
+mongoose.connect("mongodb://namechat:namechat947@ds229790.mlab.com:29790/chat-app").then(function(dbcon){
   console.log("DB connected to cloud");
 }).catch(function(err){
   console.log("Error While connecting to Cloud DB");
